@@ -1,0 +1,169 @@
+<div ng-controller="pageController">
+	<div class='col-xs-12 pull-right'>
+		<span ng-Click="addNewPage()" style="margin-top:10px;" class="btn btn-success pull-right"><i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Add Page</span>
+	</div>
+	<div class='col-xs-12'>
+		<table class="table table-hover" ng-table="tableParams">
+			<thead>
+				<tr>
+					<th>Page Name</th>
+					<th>Category</th>
+					<th>Sub Category</th>
+					<th class='text-center'>Page Status </th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<tr ng-repeat='page in $data' ng-show='$data.length>0'>
+					<td>{{page.name | limitTo:20}} <span ng-show="page.name.length>20">...</span></td>
+					<td>{{page.category_id.name}}</td>
+					<td>{{page.subcategory_id.name}}</td>
+					<td class='text-center'>
+						<i class='glyphicon glyphicon-ok link' ng-click="makePageActive(page)" ng-class="{true:'active_flag',false:''}[page.active]">&nbsp;</i>
+					</td>
+					<td class='text-right'>
+						<span class="btn btn-danger link" ng-click="deletePage(page._id)" restrict='' editAccess="{{page.createdBy._id}}"> DELETE </span>
+						<span class="btn btn-warning link" ng-click="editPagePopupOpen(page._id)" > EDIT </span>
+						<span class="btn btn-primary link" ng-click="pagePreview(page._id)" > PREVIEW </span>
+					</td>
+				</tr>
+				
+				<tr ng-show='$data.length<=0'>
+					<td colspan='4'>No records to display</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<!--Add Category PopUp -->
+	<div class="modal fade" id="addPagePopup" tabindex="-1" role="dialog" aria-labelledby="Increase request" aria-hidden="true">
+		<div class="modal-dialog custom-modal1">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"  ng-click="cancelFunction()">
+						<span aria-hidden="true" class="glyphicon glyphicon-remove"></span><span
+							class="sr-only">Close</span>
+					</button>
+					<h3 class="modal-title" id="myModalLabel">Add / Edit Page</h3>
+				</div>
+					
+				<div class="modal-body modal-body-popup">
+					<div class='container-fluid'>
+					
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>Category</div>
+							<div class='col-xs-7'>
+								<select class='form-control input-md' ng-model="newPage.category_id" ng-options="category._id as category.name for category in categories">
+									<option value="">-- Select Parent Category --</option>
+								</select>
+							</div>
+						</div>
+						
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>Sub Category</div>
+							<div class='col-xs-7'>
+								<select class='form-control input-md' ng-model="newPage.subcategory_id" ng-options="subcategory._id as subcategory.name for subcategory in subCategories | filter:{category_id:newPage.category_id}">
+									<option value="">-- Select Parent Category --</option>
+								</select>
+							</div>
+						</div>
+						
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>Page Name</div>
+							<div class='col-xs-7'>
+								<input type="text" class='form-control input-md' placeholder="enter the category name" ng-model="newPage.name">
+							</div>
+						</div>
+						
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>Page Description</div>
+							<div class='col-xs-7'>
+								&nbsp;
+							</div>
+						</div>
+						
+						<div>
+							<div class='col-xs-12 td_row'>
+								<div class='col-xs-6' ng-repeat='image in newPage.imageList' ng-show="newPage.imageList">
+									<div class='col-xs-12'>
+										<img src="/images/{{image.name}}" style='width:50px;'>
+									</div>
+									<div class='col-xs-12'>
+										<span>{{imgUrl(image.name)}}</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>Page Images</div>
+							<div class='col-xs-7'>
+								<input type="file" file-model="pageImage" />
+							</div>
+						</div>
+						
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>Attachments</div>
+							<div class='col-xs-7'>
+								<input type="file" file-model="pageDocs"/>
+							</div>
+						</div>
+						
+						<div class='col-xs-12 td_row'>
+							<div class="col-xs-2" ng-repeat='doc in newPage.docList'>
+								<div class='block-attach' >
+									<a class='block-content' href="/images/{{doc.name}}" target="_blank">
+										<span class='label link'> {{fileName(doc.name)}}</span>
+										<span class='block_logo'>
+											<span style='background:url(images/{{fileIcon(doc.name)}}); border-radius:50%;'></span>
+										</span>
+									</a>
+								</div>
+								
+								<div class='col-xs-12'>
+									<a ng-Click="deleteAttach(newPage.docList,$index)">Delete</a>
+								</div>
+							</div>
+						</div>
+						
+						
+						<div class='col-xs-12 td_row'>
+							<div text-angular ng-model='newPage.content'></div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary btn-lg" ng-Click='createPage()' ng-show="!newPage._id">ADD</button>
+					<button type="submit" class="btn btn-primary btn-lg" ng-Click='editPage()' ng-show='newPage._id'>UPDATE</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	<div class="modal fade" id="pagePreviewPopup" tabindex="-1" role="dialog" aria-labelledby="Increase request" aria-hidden="true">
+		<div class="modal-dialog custom-modal1">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"  ng-click="cancelFunction()">
+						<span aria-hidden="true" class="glyphicon glyphicon-remove"></span><span
+							class="sr-only">Close</span>
+					</button>
+					<h3 class="modal-title" id="myModalLabel">{{newPage.name}}</h3>
+				</div>
+					
+				<div class="modal-body modal-body-popup">
+					<div class='container-fluid'>
+						<div bind-html-unsafe="newPage.content"></div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary btn-lg" data-dismiss="modal">OK</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

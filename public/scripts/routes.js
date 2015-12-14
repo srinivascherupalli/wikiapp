@@ -1,0 +1,28 @@
+wikiApp.config(['$routeProvider',function($routeProvider){
+	$routeProvider.
+		when('/home',{
+			templateUrl:'/views/home.html',
+			controller:'homeController'
+		}).
+		when('/page/:id',{
+			templateUrl:'/views/page.html',
+			controller:'pageCtrl'
+		}).
+		when('/:cat_name/:id',{
+			templateUrl:'/views/category.html',
+			controller:'categoryCtrl'
+		}).
+		when('/:cat_name/:subcat_name/:id',{
+			templateUrl:'/views/category.html',
+			controller:'categoryCtrl'
+		}).
+		when('/admin',{
+			templateUrl:'/views/admin/index.html',
+			controller:'adminController'
+		}).
+		when('/logout',{
+			redirectTo:'/home'
+		}).otherwise({
+			redirectTo:'/home'
+		})
+}]);

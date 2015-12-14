@@ -1,0 +1,42 @@
+<div class="container body_bg" ng-controller="pageCtrl">
+	<div class='col-xs-12 col-md-12 col-sm-12'>
+		<div class='col-xs-12 content-block'>
+			<div class='col-xs-12'>
+				<ul class='bread col-xs-12'>
+					<li ng-repeat='breadCrumb in breadCrumbs'><a href='{{breadCrumb.link}}'>{{breadCrumb.text}}</a></li>
+				</ul>
+			</div>
+			<div class='col-xs-12'>
+				<div class="panel panel-info">
+					<div class="panel-heading" ng-show="page.name">
+						<h3 class="panel-title">&nbsp;
+							<div class='pull-right row author link' ng-show="page.createdBy" ng-click="link('Contacts/'+page.createdBy.name+'/'+page.createdBy._id)">
+								<div class='profile' style='background-image:url(images/{{page.createdBy.avatar}});'></div>
+								<div>
+									<p><span><a>{{page.createdBy.name}}</a></span></p>
+									<p><span>{{getDate(page.date)}}</span></p>
+								</div>
+							</div>
+						</h3>
+					</div>
+					<div class="panel-body">
+						<h3>Title: {{page.name | uppercase }}</h3>
+						<div ng-show="page.attachments" class='col-xs-12'>
+							<div class='block-attach' ng-repeat="attach in getAttachments(page.attachments)">
+								<a class='block-content' href="/images/{{attach.name}}" target="_blank">
+									<span class='label link'> {{attach.name}}</span>
+									<span class='block_logo'>
+										<span style='background-image:url(images/{{attach.icon}}); border-radius:50%;'></span>
+									</span> 
+								</a>
+							</div>
+						</div>	
+						<div bind-html-unsafe="displayPage(page)" class='content col-xs-12'></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+

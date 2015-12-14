@@ -1,0 +1,122 @@
+<div ng-controller="usersController">
+	<div class='col-xs-12 pull-right'>
+		<span ng-Click="addNewUser()" style="margin-top:10px;" class="btn btn-success pull-right"><i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Add User</span>
+	</div>
+	<div class='col-xs-12'>
+		<table class="table table-hover" ng-table='tableParams'>
+			<thead>
+				<tr>
+					<th>User Name</th>
+					<th>User Avatar</th>
+					<th class='text-center'>User Status </th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<tr ng-repeat='user in $data' ng-show='$data.length>0'>
+					<td>{{user.name}}</td>
+					<td>
+						<div ng-show='user.avatar!=""'>
+							<img src="/images/{{user.avatar}}" style='width:50px;'>
+						</div>
+					</td>
+					<td class='text-center'>
+						<i class='glyphicon glyphicon-ok link' ng-click="makeUserActive(user)" ng-class="{true:'active_flag',false:''}[user.active]">&nbsp;</i>
+					</td>
+					<td class='text-right'>
+						<span class="btn btn-danger link" ng-click="deleteUser(user._id)" restrict='' editRole="admin"> DELETE </span>
+						<span class="btn btn-warning link" ng-click="editUserPopupOpen(user._id)" restrict='' editAccess="{{user._id}}"> EDIT </span>
+					</td>
+				</tr>
+				
+				<tr ng-show='$data.length<=0'>
+					<td colspan='4'>No records to display</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<!--Add Category PopUp -->
+	<div class="modal fade" id="addUserPopup" tabindex="-1" role="dialog" aria-labelledby="Increase request" aria-hidden="true">
+		<div class="modal-dialog custom-modal1">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"  ng-click="cancelFunction()">
+						<span aria-hidden="true" class="glyphicon glyphicon-remove"></span><span
+							class="sr-only">Close</span>
+					</button>
+					<h3 class="modal-title" id="myModalLabel">Add / Edit User</h3>
+				</div>
+					
+				<div class="modal-body modal-body-popup">
+					<div class='container-fluid'>
+					
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>User Name</div>
+							<div class='col-xs-7'>
+								<input type="text" class='form-control input-md' placeholder="enter the user name" ng-model="newUser.name">
+							</div>
+						</div>
+						
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>Lid</div>
+							<div class='col-xs-7'>
+								<input type="text" class='form-control input-md' placeholder="enter the user name" ng-model="newUser.lid">
+							</div>
+						</div>
+						
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>Password</div>
+							<div class='col-xs-7'>
+								<input type="password" class='form-control input-md' placeholder="enter the user name" ng-model="newUser.password">
+							</div>
+						</div>
+						
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>Email</div>
+							<div class='col-xs-7'>
+								<input type="text" class='form-control input-md' placeholder="enter the email" ng-model="newUser.email">
+							</div>
+						</div>
+						
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>Primary Contact</div>
+							<div class='col-xs-7'>
+								<input type="text" class='form-control input-md' placeholder="enter the contact number" ng-model="newUser.contact1">
+							</div>
+						</div>
+						
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>Secondary Contact</div>
+							<div class='col-xs-7'>
+								<input type="text" class='form-control input-md' placeholder="enter the contact number" ng-model="newUser.contact2">
+							</div>
+						</div>
+						
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>User Role</div>
+							<div class='col-xs-7'>
+								<select class='form-control input-md' ng-model="newUser.role_id" ng-options="role._id as role.name for role in userRoles">
+									<option value="">-- Select User Role --</option>
+								</select>
+							</div>
+						</div>
+						
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>User Avatar</div>
+							<div class='col-xs-7'>
+								<img src="/images/{{newUser.avatar}}" style='width:50px;' ng-show='newUser.avatar.length>0'>
+								<input type="file" file-model="userAvatar" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary btn-lg" ng-Click='createUser()' ng-show="!newUser._id" ng-disabled="(newUser.name==null	||	newUser.name=='')" >ADD</button>
+					<button type="submit" class="btn btn-primary btn-lg" ng-Click='editUser()' ng-show='newUser._id'>UPDATE</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

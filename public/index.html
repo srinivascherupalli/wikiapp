@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html ng-app="wikiApp">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+	<title>WIKI</title>
+	<link href="/css/normalize.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/css/style.css">
+	
+	<script src="/scripts/lib/html5shiv.min.js"type='text/javascript'></script>
+	<script src="/scripts/lib/respond.min.js"type='text/javascript'></script>
+	<script src="/scripts/lib/jquery.min.js"></script>
+	<script src="/scripts/lib/bootstrap.min.js"></script>
+	<script src="/scripts/lib/angular.min.js"></script>
+    <script src="/scripts/lib/angular-route.min.js"></script>
+	<script src='/scripts/lib/textAngular-sanitize.min.js'></script>
+	<script src='/scripts/lib/textAngular-rangy.min.js'></script>
+	<script src='/scripts/lib/textAngular.min.js'></script>
+	<script src="/scripts/lib/ng-table.min.js"></script>
+	<script src="/scripts/lib/angular-cookies.js"></script>
+	<script src="/scripts/app.js"></script>
+	<script src="/scripts/routes.js"></script>
+	
+	<!--Angular Controllers -->
+	<script src="/scripts/controllers/mainController.js"></script>
+	<script src="/scripts/controllers/homeController.js"></script>
+	<script src="/scripts/controllers/adminController.js"></script>
+	<script src="/scripts/controllers/categoriesController.js"></script>
+	<script src="/scripts/controllers/subCategoryController.js"></script>
+	<script src="/scripts/controllers/siteConfigController.js"></script>
+	<script src="/scripts/controllers/pageController.js"></script>
+	
+	<script src="/scripts/controllers/categoryCtrl.js"></script>
+	<script src="/scripts/controllers/userRolesController.js"></script>
+	<script src="/scripts/controllers/usersController.js"></script>
+	<script src="/scripts/controllers/pageCtrl.js"></script>
+	<!-- Angular Services -->
+	<script src="/scripts/services/adminService.js"></script>
+	
+</head>
+<!-- SET THE CONTROLLER AND GET ALL TODOS -->
+<body ng-controller="mainController" ng-cloak>
+	<header class="container-fluid">
+		<ng-include data-src="'/views/header.html'"></ng-include>	
+	</header>
+	
+	<main>
+		<section>
+			<ng-view></ng-view>
+		</section>
+	</main>
+	<div class="modal fade" id="loginPopup" tabindex="-1" role="dialog" aria-labelledby="Increase request" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"  ng-click="cancelFunction()">
+						<span aria-hidden="true" class="glyphicon glyphicon-remove"></span><span
+							class="sr-only">Close</span>
+					</button>
+					<h3 class="modal-title" id="myModalLabel">Login</h3>
+				</div>
+					
+				<div class="modal-body modal-body-popup">
+					<div class='container-fluid'>
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>User Name / LID</div>
+							<div class='col-xs-7'>
+								<input type="text" class='form-control input-md' placeholder="enter the user name" ng-model="newAuthUser.lid">
+							</div>
+						</div>
+						
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>Password</div>
+							<div class='col-xs-7'>
+								<input type="password" class='form-control input-md' placeholder="enter the user name" ng-model="newAuthUser.password">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class='col-xs-12'>
+						<div class='col-xs-12'>
+							<br><br>
+							<a href='' ng-Click="openRegisterPopup()" class='pull-left'>Register</a>
+							<button type="submit" class="btn btn-primary btn-lg" ng-Click='userLogin()'>LOGIN</button>
+						</div>
+						<p>&nbsp;</p>
+						<div role="alert" class="alert alert-success col-xs-12" ng-class="{1:'alert-success',2:'alert-danger'}[alertMsgType]" ng-show='alertMsg'>
+							<span class='pull-left' bind-html-unsafe="alertMsg"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="registerPopup" tabindex="-1" role="dialog" aria-labelledby="Increase request" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"  ng-click="cancelFunction()">
+						<span aria-hidden="true" class="glyphicon glyphicon-remove"></span><span
+							class="sr-only">Close</span>
+					</button>
+					<h3 class="modal-title" id="myModalLabel">Register</h3>
+				</div>
+					
+				<div class="modal-body modal-body-popup">
+					<div class='container-fluid'>
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>Name</div>
+							<div class='col-xs-7'>
+								<input type="text" class='form-control input-md' placeholder="enter the user name" ng-model="newUser.name">
+							</div>
+						</div>
+						
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>Lid</div>
+							<div class='col-xs-7'>
+								<input type="text" class='form-control input-md' placeholder="enter the Westpac salary Id" ng-model="newUser.lid">
+							</div>
+						</div>
+						
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>Password</div>
+							<div class='col-xs-7'>
+								<input type="password" class='form-control input-md' ng-model="newUser.password">
+							</div>
+						</div>
+						
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>Email</div>
+							<div class='col-xs-7'>
+								<input type="text" class='form-control input-md' placeholder="enter the email" ng-model="newUser.email">
+							</div>
+						</div>
+						
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>Primary Contact</div>
+							<div class='col-xs-7'>
+								<input type="text" class='form-control input-md' placeholder="enter the contact number" ng-model="newUser.contact1">
+							</div>
+						</div>
+						
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>Secondary Contact</div>
+							<div class='col-xs-7'>
+								<input type="text" class='form-control input-md' placeholder="enter the contact number" ng-model="newUser.contact2">
+							</div>
+						</div>
+						
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>User Avatar</div>
+							<div class='col-xs-7'>
+								<img src="/images/{{newUser.avatar}}" style='width:50px;' ng-show='newUser.avatar.length>0'>
+								<input type="file" file-model="userImgAvatar" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class='col-xs-12'>
+						<div class='col-xs-12'>
+							<br><br>
+							<a href='' ng-Click="openLoginPopup()" class='pull-left'>Login</a>
+							<button type="submit" class="btn btn-primary btn-lg" ng-Click='createGuestUser()' ng-disabled="checkUser(newUser)" >REGISTER</button>
+						</div>
+						<p>&nbsp;</p>
+						<div role="alert" class="alert alert-success col-xs-12" ng-class="{1:'alert-success',2:'alert-danger'}[alertMsgType]" ng-show='alertMsg'>
+							<span class='pull-left' bind-html-unsafe="alertMsg"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

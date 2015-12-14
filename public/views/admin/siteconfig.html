@@ -1,0 +1,82 @@
+<div ng-controller="siteConfigController">
+	<!--<div class='col-xs-12 pull-right'>
+		<span ng-Click="addNewSiteConfigPopup()" style="margin-top:10px;" class="btn btn-success pull-right"><i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Add SiteConfig</span>
+	</div>-->
+	<div class='col-xs-12'>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Avatar</th>
+					<th class='text-center'>Active</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<tr ng-repeat='site in siteConfig' ng-show='siteConfig.length>0'>
+					<td>{{site.name}}</td>
+					<td>
+						<div ng-show='site.avatar!=""'>
+							<img src="/images/{{site.avatar}}" style='width:50px;'>
+						</div>
+					</td>
+					<td class='text-center'>
+						<i class='glyphicon glyphicon-ok link' ng-click="makeSiteActive(site)" ng-class="{true:'active_flag',false:''}[site.active]">&nbsp;</i>
+					</td>
+					<td class='text-right'>
+						<!--<span class="btn btn-danger link" ng-click="deleteSiteConfig(site._id)" > DELETE </span>-->
+						<span class="btn btn-warning link" ng-click="editSiteConfigPopupOpen(site._id)" > EDIT </span>
+					</td>
+				</tr>
+				
+				<tr ng-show='siteConfig.length<=0'>
+					<td colspan='4'>No records to display</td>
+				</tr>
+			</tbody>
+		</table>
+		
+	</div>
+
+	<div class="modal fade" id="addSiteConfigPopup" tabindex="-1" role="dialog" aria-labelledby="Increase request" aria-hidden="true">
+		<div class="modal-dialog custom-modal1">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"  ng-click="cancelFunction()">
+						<span aria-hidden="true" class="glyphicon glyphicon-remove"></span><span
+							class="sr-only">Close</span>
+					</button>
+					<h3 class="modal-title" id="myModalLabel">Add / Edit Category</h3>
+				</div>
+					
+				<div class="modal-body modal-body-popup">
+					<div class='container-fluid'>
+						<div class='col-xs-12 col-sm-12 col-md-12 td_row'>
+							<div>
+								<div class='col-xs-12 col-sm-6 col-md-3'>Site Name : </div>
+								<div class='col-xs-12 col-sm-6 col-md-9'>
+									<input type='text' class='form-control' ng-model='newSiteConfig.name'>
+								</div>
+							</div>
+						</div>
+		
+						<div class='col-xs-12 col-sm-12 col-md-12 td_row'>
+							<div>
+								<div class='col-xs-12 col-sm-6 col-md-3'>Site Logo : </div>
+								<div class='col-xs-12 col-sm-6 col-md-9'>
+									<img src="/images/{{newSiteConfig.avatar}}" style='width:50px;' ng-show='newSiteConfig.avatar.length>0'>
+									<input type='file' file-model="siteAvatar">
+									<br>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary btn-lg" ng-Click='addSiteConfig()' ng-show="!newSiteConfig._id">ADD</button>
+					<button type="submit" class="btn btn-primary btn-lg" ng-Click='editSiteConfig()' ng-show='newSiteConfig._id'>UPDATE</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

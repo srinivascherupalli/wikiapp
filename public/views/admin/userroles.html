@@ -1,0 +1,65 @@
+<div ng-controller="userRolesController">
+	<div class='col-xs-12 pull-right'>
+		<span ng-Click="addRolePopup()" style="margin-top:10px;" class="btn btn-success pull-right"><i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Add User Role</span>
+	</div>
+	<div class='col-xs-12'>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th class='text-center'>Active</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<tr ng-repeat='role in userRoles' ng-show='userRoles.length>0'>
+					<td>{{role.name}}</td>
+					<td class='text-center'>
+						<i class='glyphicon glyphicon-ok link' ng-click="makeRoleActive(role)" ng-class="{true:'active_flag',false:''}[role.active]">&nbsp;</i>
+					</td>
+					<td class='text-right'>
+						<span class="btn btn-danger link" ng-click="deleteRole(role._id)" > DELETE </span>
+						<span class="btn btn-warning link" ng-click="editRolePopupOpen(role._id)" > EDIT </span>
+					</td>
+				</tr>
+				
+				<tr ng-show='userRoles.length<=0'>
+					<td colspan='4'>No records to display</td>
+				</tr>
+			</tbody>
+		</table>
+		
+	</div>
+
+	<div class="modal fade" id="addRolePopup" tabindex="-1" role="dialog" aria-labelledby="Increase request" aria-hidden="true">
+		<div class="modal-dialog custom-modal1">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"  ng-click="cancelFunction()">
+						<span aria-hidden="true" class="glyphicon glyphicon-remove"></span><span
+							class="sr-only">Close</span>
+					</button>
+					<h3 class="modal-title" id="myModalLabel">Add / Edit User Roles</h3>
+				</div>
+					
+				<div class="modal-body modal-body-popup">
+					<div class='container-fluid'>
+						<div class='col-xs-12 col-sm-12 col-md-12 td_row'>
+							<div>
+								<div class='col-xs-12 col-sm-6 col-md-3'>Role Name : </div>
+								<div class='col-xs-12 col-sm-6 col-md-9'>
+									<input type='text' class='form-control' ng-model='newRole.name'>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary btn-lg" ng-Click='addRole()' ng-show="!newRole._id">ADD</button>
+					<button type="submit" class="btn btn-primary btn-lg" ng-Click='editRole()' ng-show='newRole._id'>UPDATE</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,86 @@
+<div ng-controller="categoriesController">
+	<div class='col-xs-12 pull-right'>
+		<span ng-Click="addNewCategory()" style="margin-top:10px;" class="btn btn-success pull-right"><i ng-click="deleteCategory(category._id)" class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Add Category</span>
+	</div>
+	<div class='col-xs-12'>
+		<table class="table table-hover" ng-table="tableParams">
+			<thead>
+				<tr>
+					<th>Category Name</th>
+					<th>Category Avatar</th>
+					<th class='text-center'>Category Status </th>
+					<th class='text-center'>Category Order </th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<tr ng-repeat='category in $data' ng-show='$data.length>0'>
+					<td>{{category.name}}</td>
+					<td>
+						<div ng-show='category.avatar!=""'>
+							<img src="/images/{{category.avatar}}" style='width:50px;'>
+						</div>
+					</td>
+					<td class='text-center'>
+						<i class='glyphicon glyphicon-ok link' ng-click="makeCategoryActive(category)" ng-class="{true:'active_flag',false:''}[category.active]">&nbsp;</i>
+					</td>
+					<td class='text-center'>
+						<select ng-model="category.order" ng-change="changeCategoryOrder(category,category.order)" ng-options="o as o for o in arrayNum"></select>
+					</td>
+					<td class='text-right'>
+						<span class="btn btn-danger link" ng-click="deleteCategory(category._id)" restrict='' editAccess="{{category.createdBy._id}}"> DELETE </span>
+						<span class="btn btn-warning link" ng-click="editCategoryPopupOpen(category._id)" > EDIT </span>
+					</td>
+				</tr>
+				
+				<tr ng-show='$data.length<=0'>
+					<td colspan='4'>No records to display</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<!--Add Category PopUp -->
+	<div class="modal fade" id="addCategoryPopup" tabindex="-1" role="dialog" aria-labelledby="Increase request" aria-hidden="true">
+		<div class="modal-dialog custom-modal1">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"  ng-click="cancelFunction()">
+						<span aria-hidden="true" class="glyphicon glyphicon-remove"></span><span
+							class="sr-only">Close</span>
+					</button>
+					<h3 class="modal-title" id="myModalLabel">Add / Edit Category</h3>
+				</div>
+					
+				<div class="modal-body modal-body-popup">
+					<div class='container-fluid'>
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>Category Name</div>
+							<div class='col-xs-7'>
+								<input type="text" class='form-control input-md' placeholder="enter the category name" ng-model="newCategory.name">
+							</div>
+						</div>
+						
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>Category Icon</div>
+							<div class='col-xs-7'>
+								<img src="/images/{{newCategory.avatar}}" style='width:50px;' ng-show='newCategory.avatar.length>0'>
+								<div>
+									<a ng-Click="deleteFile(newCategory.avatar)" href="" ng-show="showFileDeleteOption(newCategory.avatar)">Delete</a>
+								</div>
+								<input type="file" file-model="catAvatar" />
+								
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary btn-lg" ng-Click='createCategory()' ng-show="!newCategory._id" ng-disabled="newCategory.name==null	||	newCategory.name==''" >ADD</button>
+					<button type="submit" class="btn btn-primary btn-lg" ng-Click='editCategory()' ng-show='newCategory._id'>UPDATE</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

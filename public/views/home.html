@@ -1,0 +1,14 @@
+<div class="container body_bg">
+	<div class='col-xs-12 col-sm-6 col-md-3' ng-repeat="cat in categories">
+		<div class='block' ng-style="{'background-color': cat.bgcolor}" ng-click="link(cat.name+'/'+cat._id)">
+			<div class='block-content'>
+				<div class='label link'>{{cat.name}}</div>
+				<div class='block_logo'>
+					<span style='background:url(images/{{cat.avatar}}); border-radius:50%;'></span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+

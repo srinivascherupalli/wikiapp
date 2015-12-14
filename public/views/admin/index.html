@@ -1,0 +1,23 @@
+<div class="container body_bg" >
+	<div class="col-sm-5 col-md-3 col-xs-12" ng-show='authUser'>
+		<div class="col-xs-12">
+			<ul class='cat_list'>
+				<li ng-repeat="section in sections" ng-Click="showSection(section.id)" ng-class='{active:section.active}' restrict='' editRole="{{section.role}}">
+					{{section.name}}
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="col-xs-12 col-md-9 col-sm-7" ng-show='authUser'>
+		<div class="col-xs-12 right_block">
+			<ng-include data-src="currentPage"></ng-include>
+		</div>
+	</div>
+	
+	<div class="col-xs-12 col-md-12 col-sm-7" ng-show='!authUser'>
+		<div class="col-xs-12 right_block">
+			<ng-include data-src="currentPage"></ng-include>
+		</div>
+	</div>
+</div>

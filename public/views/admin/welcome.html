@@ -1,0 +1,10 @@
+<div ng-show='!authUser'>
+	<h1>Welcome to {{siteConfig.name}} Admin Page.</h1>
+	<p><a ng-click="openLoginPopup()" class='link'>Click here</a> to login</p>
+</div>
+
+
+<div ng-show='authUser'>
+	<h1>Hi, {{authUser.name}}.. </h1>
+	Welcome to {{siteConfig.name}} Admin Page
+</div>

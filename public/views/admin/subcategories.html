@@ -1,0 +1,97 @@
+<div ng-controller="subCatController">
+	<div class='col-xs-12 pull-right'>
+		<span ng-Click="addNewSubCategory()" style="margin-top:10px;" class="btn btn-success pull-right"><i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Add SubCategory</span>
+	</div>
+	<div class='col-xs-12'>
+		<table class="table table-hover" ng-table='tableParams'>
+			<thead>
+				<tr>
+					<th>SubCategory Name</th>
+					<th>Parent Category</th>
+					<th>SubCategory Avatar</th>
+					<th class='text-center'>SubCategory Status </th>
+					<th class='text-center'>SubCategory Order</th>
+					<th class='col-xs-3'>&nbsp;</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<tr ng-repeat='subcategory in $data' ng-show='$data.length>0'>
+					<td>{{subcategory.name}}</td>
+					<td>{{subcategory.category_id.name}}</td>
+					<td>
+						<div ng-show='subcategory.avatar!=""'>
+							<img src="/images/{{subcategory.avatar}}" style='width:50px;'>
+						</div>
+					</td>
+					<td class='text-center'>
+						<i class='glyphicon glyphicon-ok link' ng-click="makeSubCategoryActive(subcategory)" ng-class="{true:'active_flag',false:''}[subcategory.active]">&nbsp;</i>
+					</td>
+					<td class='text-center'>
+						<select ng-model="subcategory.order" ng-change="changeSubCategoryOrder(subcategory,subcategory.order)" ng-options="o as o for o in arrayNum"></select>
+					</td>
+					<td class='text-right'>
+						<span class="btn btn-danger link" ng-click="deleteSubCategory(subcategory._id)" restrict='' editAccess="{{subcategory.createdBy._id}}"> DELETE </span>
+						<span class="btn btn-warning link" ng-click="editSubCategoryPopupOpen(subcategory._id)" > EDIT </span>
+					</td>
+				</tr>
+				
+				<tr ng-show='$data.length<=0'>
+					<td colspan='4'>No records to display</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<!--Add Category PopUp -->
+	<div class="modal fade" id="addSubCategoryPopup" tabindex="-1" role="dialog" aria-labelledby="Increase request" aria-hidden="true">
+		<div class="modal-dialog custom-modal1">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"  ng-click="cancelFunction()">
+						<span aria-hidden="true" class="glyphicon glyphicon-remove"></span><span
+							class="sr-only">Close</span>
+					</button>
+					<h3 class="modal-title" id="myModalLabel">Add / Edit SubCategory</h3>
+				</div>
+					
+				<div class="modal-body modal-body-popup">
+					<div class='container-fluid'>
+					
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>Category</div>
+							<div class='col-xs-7'>
+								<select ng-model="newSubCategory.category_id" class='form-control input-md' ng-options="category._id as category.name for category in categories">
+									<option value="">-- Select Parent Category --</option>
+								</select>
+							</div>
+						</div>
+						
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>SubCategory Name</div>
+							<div class='col-xs-7'>
+								<input type="text" class='form-control input-md' placeholder="enter the category name" ng-model="newSubCategory.name">
+							</div>
+						</div>
+						
+						<div class='col-xs-12 td_row'>
+							<div class='col-xs-5'>SubCategory Icon</div>
+							<div class='col-xs-7'>
+								<img src="/images/{{newSubCategory.avatar}}" style='width:50px;' ng-show='newSubCategory.avatar.length>0'>
+								<div>
+									<a ng-Click="deleteFile(newSubCategory.avatar)" href="" ng-show="showFileDeleteOption(newSubCategory.avatar)">Delete</a>
+								</div>
+								<input type="file" file-model="subcatAvatar" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary btn-lg" ng-Click='createSubCategory()' ng-show="!newSubCategory._id" ng-disabled="(newSubCategory.name==null	||	newSubCategory.name=='')	&&	!newSubCategory.category_id" >ADD</button>
+					<button type="submit" class="btn btn-primary btn-lg" ng-Click='editSubCategory()' ng-show='newSubCategory._id'>UPDATE</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
